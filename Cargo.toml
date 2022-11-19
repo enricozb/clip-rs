@@ -4,4 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.66"
+atty = "0.2.14"
 directories = "4.0.1"
+serde = { version = "1.0.147", features = ["derive"] }
+tempfile = "3.3.0"
+toml = "0.5.9"
