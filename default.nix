@@ -1,19 +1,19 @@
-{ lib, fetchFromGitHub, rustPlatform, installShellFiles }:
+{ pkgs ? import <nixpkgs> { } }:
 
-rustPlatform.buildRustPackage rec {
+pkgs.rustPlatform.buildRustPackage rec {
   pname = "clip-rs";
   version = "0.0.1";
 
-  src = fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "enricozb";
     repo = "clip-rs";
     rev = "v${version}";
-    sha256 = "sha256-8QQHLw+isXtr1FDQr4aiUhvOjJUPbaxFGDwukiWBG9g=";
+    sha256 = "sha256-rWdhH5783rLMMDMzfOcpiD3+fpGoExgfDrum3rR6BCk=";
   };
 
-  cargoSha256 = "sha256-1Fh47Pr+7lIdT++huziKgMJxvsZElTTwu11c7/wjyHE=";
+  cargoLock = { lockFile = ./Cargo.lock; };
 
   postInstall = ''
-    ls
+    mv $out/bin/clip-rs $out/bin/clip
   '';
 }
