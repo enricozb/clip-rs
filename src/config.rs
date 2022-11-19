@@ -1,5 +1,4 @@
 use std::{
-  collections::BTreeMap,
   fs,
   fs::File,
   path::PathBuf,
@@ -8,10 +7,11 @@ use std::{
 
 use anyhow::{anyhow, Result};
 use directories::ProjectDirs;
+use indexmap::IndexMap;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
-pub struct Config(BTreeMap<String, RawEntry>);
+pub struct Config(IndexMap<String, RawEntry>);
 
 #[derive(Deserialize)]
 struct RawEntry {
