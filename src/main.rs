@@ -1,28 +1,20 @@
+mod args;
 mod clipboard;
 mod config;
 
 use anyhow::Result;
-use atty::{self, Stream::Stdin};
+use clap::Parser;
 
-use crate::clipboard::Clipboard;
-
-enum Mode {
-  Copy,
-  Paste,
-}
-
-fn mode() -> Mode {
-  if atty::is(Stdin) {
-    Mode::Paste
-  } else {
-    Mode::Copy
-  }
-}
+use crate::{
+  args::{Args, Mode},
+  clipboard::Clipboard,
+};
 
 fn main() -> Result<()> {
+  let args = Args::parse();
   let clipboard = Clipboard::new()?;
 
-  match mode() {
+  match args.mode() {
     Mode::Copy => clipboard.copy()?,
     Mode::Paste => clipboard.paste()?,
   }
