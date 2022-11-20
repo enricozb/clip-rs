@@ -2,13 +2,13 @@
 
 pkgs.rustPlatform.buildRustPackage rec {
   pname = "clip-rs";
-  version = "0.0.2";
+  version = "0.0.3";
 
   src = pkgs.fetchFromGitHub {
     owner = "enricozb";
     repo = "clip-rs";
     rev = "v${version}";
-    sha256 = "sha256-QLH6OJsU+9gf+NT2AOP7a4OxHyn9w4Wh+VQAjZNlsXo=";
+    sha256 = "sha256-8Vmw8HYeMGSSyNSjiuRphZozNkCjgev3pzZvDwEs7f4=";
   };
 
   cargoLock = { lockFile = ./Cargo.lock; };
