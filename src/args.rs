@@ -1,6 +1,10 @@
 use atty::Stream;
 use clap::Parser;
 
+// TODO(enricozb): consider args:
+//   --debug (to print stderr of commands, quiet otherwise)
+//   --strict (fail if any of the clipboard commands fail)
+
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
