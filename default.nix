@@ -2,7 +2,7 @@
 
 pkgs.rustPlatform.buildRustPackage rec {
   pname = "clip-rs";
-  version = "0.0.4";
+  version = "0.0.5";
   src = ./.;
 
   cargoLock = { lockFile = ./Cargo.lock; };
