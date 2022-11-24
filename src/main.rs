@@ -12,7 +12,7 @@ use crate::{
 
 fn main() -> Result<()> {
   let args = Args::parse();
-  let clipboard = Clipboard::new()?;
+  let clipboard = Clipboard::new(args.debug, args.strict)?;
 
   match args.mode() {
     Mode::Copy => clipboard.copy()?,

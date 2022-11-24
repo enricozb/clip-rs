@@ -26,7 +26,7 @@ pub struct Command {
 }
 
 pub struct Entry {
-  name: String,
+  pub name: String,
   get: Option<Command>,
   set: Command,
 }
@@ -46,26 +46,18 @@ impl From<Config> for Vec<Entry> {
 }
 
 impl Entry {
-  pub fn set(&self, file: File) {
+  pub fn set(&self, file: File) -> Result<Output> {
     let Command { cmd, args } = &self.set;
-    if let Err(error) = StdCommand::new(cmd).args(args).stdin(file).output() {
-      eprintln!("Couldn't set clipboard for '{}': {error}", self.name);
-    }
+
+    Ok(StdCommand::new(cmd).args(args).stdin(file).output()?)
   }
 
-  pub fn get(&self) -> Option<Vec<u8>> {
-    let Command { cmd, args } = self.get.as_ref()?;
-    match StdCommand::new(cmd).args(args).output() {
-      Ok(Output { status, stdout, .. }) if status.success() => return Some(stdout),
-      Ok(Output { stderr, .. }) => eprintln!(
-        "Couldn't get clipboard for '{}': {}",
-        self.name,
-        String::from_utf8_lossy(&stderr)
-      ),
-      Err(error) => eprintln!("Couldn't get clipboard for '{}': {error}", self.name),
+  pub fn get(&self) -> Result<Option<Output>> {
+    if let Some(Command { cmd, args }) = self.get.as_ref() {
+      Ok(Some(StdCommand::new(cmd).args(args).output()?))
+    } else {
+      Ok(None)
     }
-
-    None
   }
 }
 
