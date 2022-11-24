@@ -39,7 +39,7 @@ impl Clipboard {
           eprintln_status("get", &entry.name, &stderr);
         }
 
-        (_, true, Err(error)) => return Err(error),
+        (_, true, Err(error)) => return error_error("get", &entry.name, &error),
         (_, true, Ok(Output { status, stderr, .. })) if !status.success() => {
           return error_status("get", &entry.name, &stderr);
         }
@@ -59,7 +59,7 @@ impl Clipboard {
           eprintln_status("set", &entry.name, &stderr);
         }
 
-        (_, true, Err(error)) => return Err(error),
+        (_, true, Err(error)) => return error_error("set", &entry.name, &error),
         (_, true, Ok(Some(Output { status, stderr, .. }))) if !status.success() => {
           return error_status("set", &entry.name, &stderr);
         }
@@ -86,6 +86,10 @@ fn eprintln_status(method: &str, name: &str, stderr: &[u8]) {
     "Clipboard '{name}' {method} exited with non-zero status: {}",
     String::from_utf8_lossy(stderr)
   );
+}
+
+fn error_error(method: &str, name: &str, error: &Error) -> Result<()> {
+  Err(anyhow!("Couldn't {method} clipboard for '{name}': {error}"))
 }
 
 fn error_status(method: &str, name: &str, stderr: &[u8]) -> Result<()> {
