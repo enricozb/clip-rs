@@ -27,6 +27,11 @@ impl Clipboard {
     let mut stdin = Vec::new();
     io::stdin().read_to_end(&mut stdin)?;
 
+    // strip the last newline if there is one
+    if stdin.last().map_or(false, |c| *c == b'\n') {
+      stdin.pop();
+    }
+
     for entry in &self.entries {
       let mut tempfile = tempfile::tempfile()?;
       tempfile.write_all(&stdin)?;
