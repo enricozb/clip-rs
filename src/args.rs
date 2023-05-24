@@ -36,6 +36,10 @@ pub struct Args {
   #[arg(short, long)]
   paste: bool,
 
+  /// Don't strip single trailing newline when copying
+  #[arg(short, long)]
+  pub raw: bool,
+
   /// Print out errors to stderr
   #[arg(short, long)]
   pub debug: bool,

@@ -10,14 +10,16 @@ use crate::config::{self, Entry};
 pub struct Clipboard {
   entries: Vec<Entry>,
 
+  raw: bool,
   debug: bool,
   strict: bool,
 }
 
 impl Clipboard {
-  pub fn new(debug: bool, strict: bool) -> Result<Self> {
+  pub fn new(raw: bool, debug: bool, strict: bool) -> Result<Self> {
     Ok(Self {
       entries: config::entries()?,
+      raw,
       debug,
       strict,
     })
@@ -28,7 +30,7 @@ impl Clipboard {
     io::stdin().read_to_end(&mut stdin)?;
 
     // strip the last newline if there is one
-    if stdin.last().map_or(false, |c| *c == b'\n') {
+    if !self.raw && stdin.last().map_or(false, |c| *c == b'\n') {
       stdin.pop();
     }
 
